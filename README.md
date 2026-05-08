@@ -1,5 +1,5 @@
 # nodebb-focus-mode
-Immersive reading mode for NodeBB - Hides the UI, centers content, CRT glitch effect on activation. F shortcut, reading progress bar, Bootstrap multi-theme compatible.
+Immersive reading mode for NodeBB 
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![NodeBB](https://img.shields.io/badge/NodeBB-compatible-green.svg)
