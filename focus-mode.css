@@ -65,7 +65,7 @@ body.focus-mode #astronaut {
 
 /* ── Contenu principal — centré + zoom ───────────────────────── */
 body.focus-mode #content {
-  max-width: 960px !important;
+  max-width: 860px !important;
   margin: 0 auto !important;
   padding: 40px 32px !important;
   width: 100% !important;
