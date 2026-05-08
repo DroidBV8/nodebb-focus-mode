@@ -1,5 +1,5 @@
 # nodebb-focus-mode
-Immersive reading mode for NodeBB — hides the UI, centers content, CRT glitch effect on activation. F shortcut, reading progress bar, Bootstrap multi-theme compatible.
+Immersive reading mode for NodeBB - Hides the UI, centers content, CRT glitch effect on activation. F shortcut, reading progress bar, Bootstrap multi-theme compatible.
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![NodeBB](https://img.shields.io/badge/NodeBB-compatible-green.svg)
@@ -9,18 +9,18 @@ Immersive reading mode for NodeBB — hides the UI, centers content, CRT glitch 
 
 ## Features
 
-- **Full immersion** — sidebars, header, footer and decorative elements are hidden on activation
-- **Centered reading area** — content reflows to a comfortable 860px max-width
-- **Typography zoom** — font size increases from 16px to 18px for extended reading
-- **CRT glitch effect** — visual transition on activation/deactivation, fully configurable
-- **Reading progress bar** — fixed bar at the top of the page
-- **Keyboard shortcut** — `F` to toggle, `Échap` to exit (Ctrl/Cmd/Alt+F ignored)
-- **Smart scroll** — compensates for layout shift, keeps you at the same post
-- **Toast feedback** — confirmation message on activation and deactivation
-- **Topic-only** — disabled outside topics, with an info toast if triggered elsewhere
-- **Mobile disabled** — no activation on screens under 768px
-- **Bootstrap multi-theme** — all colors use Bootstrap CSS variables, adapts to any theme
-- **Material View compatible** — both modes can be active simultaneously
+- **Full immersion** : sidebars, header, footer and decorative elements are hidden on activation
+- **Centered reading area** : content reflows to a comfortable 860px max-width
+- **Typography zoom** : font size increases from 16px to 18px for extended reading
+- **CRT glitch effect** : visual transition on activation/deactivation, fully configurable
+- **Reading progress bar** : fixed bar at the top of the page
+- **Keyboard shortcut** : `F` to toggle, `Échap` to exit (Ctrl/Cmd/Alt+F ignored)
+- **Smart scroll** : compensates for layout shift, keeps you at the same post
+- **Toast feedback** : confirmation message on activation and deactivation
+- **Topic-only** : disabled outside topics, with an info toast if triggered elsewhere
+- **Mobile disabled** : no activation on screens under 768px
+- **Bootstrap multi-theme** : all colors use Bootstrap CSS variables, adapts to any theme
+- **Material View compatible** : both modes can be active simultaneously
 
 ---
 
@@ -81,8 +81,8 @@ body.focus-mode #content {
 ## File Structure
 
 ```
-focus-mode.js     — Toggle logic, keyboard shortcut, glitch effect, scroll compensation
-focus-mode.css    — All styles, CRT glitch keyframes, configurable variables
+focus-mode.js     : Toggle logic, keyboard shortcut, glitch effect, scroll compensation
+focus-mode.css    : All styles, CRT glitch keyframes, configurable variables
 ```
 
 ---
