@@ -1,0 +1,313 @@
+// ------------------------------------------
+// Focus Mode v23
+// ------------------------------------------
+
+:root {
+  --fm-dur:   400ms;
+  --fm-ease:  cubic-bezier(.4, 0, .2, 1);
+
+  /* ── Glitch CRT — modifier ici ────────────────────────────
+     0.5 = subtil  |  1 = normal  |  2 = prononcé            */
+  --fm-glitch-opacity: 1;      /* opacité max de l'overlay   */
+  --fm-glitch-skew:    1deg;   /* inclinaison des bandes      */
+  --fm-glitch-shift:   4px;    /* décalage horizontal         */
+
+  /* ── Icône bouton ─────────────────────────────────────────── */
+  --fm-icon-weight: 400;       /* font-weight de l'icône      */
+}
+
+/* ── Fond ────────────────────────────────────────────────────── */
+body.focus-mode {
+  background: var(--bs-body-bg) !important;
+  transition: background var(--fm-dur) var(--fm-ease);
+}
+
+/* ── Masquer sidebar gauche ──────────────────────────────────── */
+body.focus-mode nav[component="sidebar/left"],
+body.focus-mode nav.sidebar-left {
+  display: none !important;
+}
+
+/* ── Masquer sidebar droite ──────────────────────────────────── */
+body.focus-mode nav[component="sidebar/right"],
+body.focus-mode nav.sidebar-right {
+  display: none !important;
+}
+
+/* ── Masquer panel topic (Répondre / Suivre / timeline) ──────── */
+body.focus-mode .topic-sidebar-tools,
+body.focus-mode .pagination-block,
+body.focus-mode div:has(> .topic-sidebar-tools) {
+  display: none !important;
+}
+
+/* ── Masquer header brand ────────────────────────────────────── */
+body.focus-mode .brand-container,
+body.focus-mode .container-lg.brand-container {
+  display: none !important;
+}
+
+/* ── Masquer miniatures du topic ─────────────────────────────── */
+body.focus-mode .flex-shrink-1.d-flex.flex-wrap.gap-2.align-items-start.mt-2.hidden-empty {
+  display: none !important;
+}
+
+/* ── Masquer footer ──────────────────────────────────────────── */
+body.focus-mode [data-widget-area="footer"],
+body.focus-mode #console-root {
+  display: none !important;
+}
+
+/* ── Masquer astronaute ──────────────────────────────────────── */
+body.focus-mode #astronaut {
+  display: none !important;
+}
+
+/* ── Contenu principal — centré + zoom ───────────────────────── */
+body.focus-mode #content {
+  max-width: 960px !important;
+  margin: 0 auto !important;
+  padding: 40px 32px !important;
+  width: 100% !important;
+  flex: none !important;
+  float: none !important;
+  font-size: 1.125em !important;
+}
+
+/* ── Corps des posts ─────────────────────────────────────────── */
+body.focus-mode [component="post/content"] {
+  color: var(--bs-body-color) !important;
+  font-size: 18px !important;
+  line-height: 1.9 !important;
+}
+
+/* ── Titre du topic ──────────────────────────────────────────── */
+body.focus-mode [component="topic/title"],
+body.focus-mode .topic-title {
+  color: var(--bs-body-color) !important;
+  font-size: 24px !important;
+  line-height: 1.4 !important;
+}
+
+/* ── Actions posts ───────────────────────────────────────────── */
+body.focus-mode [component="post/tools"],
+body.focus-mode [component="post/footer"] {
+  opacity: 0.25;
+  transition: opacity .2s;
+}
+body.focus-mode [component="post/tools"]:hover,
+body.focus-mode [component="post/footer"]:hover {
+  opacity: 1;
+}
+
+/* ── Coexistence Material View ───────────────────────────────── */
+body.focus-mode [component="post"].material [component="post/content"] {
+  font-size: 18px !important;
+  line-height: 1.9 !important;
+}
+
+/* ── Icône bouton ────────────────────────────────────────────── */
+#fm-toggle-btn i {
+  font-weight: var(--fm-icon-weight);
+}
+
+/* ── Icône active ────────────────────────────────────────────── */
+#fm-toggle-btn.active i {
+  color: var(--bs-primary, #0d6efd);
+}
+
+/* ── Bouton grisé hors topic ─────────────────────────────────── */
+#fm-toggle-btn.fm-disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   EFFET GLITCH CRT
+   ═══════════════════════════════════════════════════════════════ */
+
+#fm-glitch-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99998;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Scanlines horizontales */
+#fm-glitch-overlay::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 2px,
+    var(--bs-border-color) 2px,
+    var(--bs-border-color) 5px
+  );
+  opacity: 0;
+}
+
+/* Bande glitch */
+#fm-glitch-overlay::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0;
+  height: 8px;
+  background: var(--bs-border-color);
+  opacity: 0;
+  top: 30%;
+}
+
+/* ── Phase glitch-in ─────────────────────────────────────────── */
+@keyframes fm-overlay-in {
+  0%   { opacity: 0; }
+  30%  { opacity: var(--fm-glitch-opacity); transform: skewX(var(--fm-glitch-skew)); }
+  50%  { opacity: calc(var(--fm-glitch-opacity) * 0.4); transform: translateX(calc(var(--fm-glitch-shift) * -1)); }
+  70%  { opacity: var(--fm-glitch-opacity); transform: skewX(calc(var(--fm-glitch-skew) * -1)); }
+  100% { opacity: var(--fm-glitch-opacity); transform: none; }
+}
+
+@keyframes fm-scanlines-in {
+  0%   { opacity: 0; }
+  50%  { opacity: 0.4; }
+  100% { opacity: 0.6; }
+}
+
+@keyframes fm-band-in {
+  0%   { opacity: 0; top: 10%; }
+  25%  { opacity: 0.6; top: 30%; }
+  50%  { opacity: 0.3; top: 60%; }
+  75%  { opacity: 0.7; top: 20%; }
+  100% { opacity: 0.5; top: 45%; }
+}
+
+/* ── Phase glitch-out ────────────────────────────────────────── */
+@keyframes fm-overlay-out {
+  0%   { opacity: var(--fm-glitch-opacity); transform: none; }
+  20%  { opacity: calc(var(--fm-glitch-opacity) * 0.6); transform: translateX(var(--fm-glitch-shift)); }
+  40%  { opacity: var(--fm-glitch-opacity); transform: skewX(calc(var(--fm-glitch-skew) * -0.5)); }
+  70%  { opacity: calc(var(--fm-glitch-opacity) * 0.2); transform: none; }
+  100% { opacity: 0; transform: none; }
+}
+
+@keyframes fm-scanlines-out {
+  0%   { opacity: 0.6; }
+  100% { opacity: 0; }
+}
+
+@keyframes fm-band-out {
+  0%   { opacity: 0.5; top: 45%; }
+  30%  { opacity: 0.8; top: 70%; }
+  60%  { opacity: 0.3; top: 15%; }
+  100% { opacity: 0; top: 50%; }
+}
+
+/* Classes appliquées par JS */
+#fm-glitch-overlay.glitch-in {
+  animation: fm-overlay-in 300ms linear forwards;
+}
+#fm-glitch-overlay.glitch-in::before {
+  animation: fm-scanlines-in 300ms ease forwards;
+}
+#fm-glitch-overlay.glitch-in::after {
+  animation: fm-band-in 300ms linear forwards;
+}
+
+#fm-glitch-overlay.glitch-out {
+  animation: fm-overlay-out 300ms linear forwards;
+}
+#fm-glitch-overlay.glitch-out::before {
+  animation: fm-scanlines-out 300ms ease forwards;
+}
+#fm-glitch-overlay.glitch-out::after {
+  animation: fm-band-out 300ms linear forwards;
+}
+
+/* ── Bouton exit flottant ────────────────────────────────────── */
+#fm-exit {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 99999;
+  background: var(--bs-body-bg);
+  color: var(--bs-link-color);
+  border: 1px solid var(--bs-border-color, rgba(0,0,0,.15));
+  border-radius: 20px;
+  font-size: 11px;
+  font-family: inherit;
+  padding: 6px 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: opacity .35s ease, transform .35s ease;
+  pointer-events: none;
+  box-shadow: 0 2px 12px rgba(0,0,0,.12);
+}
+#fm-exit.visible {
+  opacity: 0.7;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+#fm-exit:hover { opacity: 1; }
+
+/* Touches clavier — variables Bootstrap */
+.fm-kbd {
+  background: var(--bs-secondary-bg);
+  color: var(--bs-card-bg);
+  border: 1px solid var(--bs-border-color);
+  border-radius: 4px;
+  padding: 1px 6px;
+  font-size: 10px;
+  font-family: inherit;
+  box-shadow: 0 1px 0 var(--bs-border-color);
+}
+
+/* ── Toast (hors topic + feedback activation) ────────────────── */
+#fm-toast {
+  position: fixed;
+  bottom: 55px;
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  background: var(--bs-body-bg);
+  color: var(--bs-link-color);
+  border: 1px solid var(--bs-border-color, rgba(0,0,0,.15));
+  border-radius: 20px;
+  font-size: 12px;
+  font-family: inherit;
+  padding: 9px 20px;
+  z-index: 99999;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .35s ease, transform .35s ease;
+  white-space: nowrap;
+  box-shadow: 0 2px 12px rgba(0,0,0,.12);
+}
+#fm-toast.visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ── Barre de progression ────────────────────────────────────── */
+#fm-prog {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  z-index: 99999;
+  pointer-events: none;
+}
+#fm-bar {
+  height: 100%;
+  width: 0%;
+  background: var(--bs-logo-bg);
+  transition: width .12s linear;
+}
+
+/* ── Scrollbar fine ──────────────────────────────────────────── */
+body.focus-mode ::-webkit-scrollbar       { width: 4px; }
+body.focus-mode ::-webkit-scrollbar-thumb { background: var(--bs-border-color, rgba(0,0,0,.2)); border-radius: 2px; }
+body.focus-mode ::-webkit-scrollbar-track { background: transparent; }
